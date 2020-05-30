@@ -3,7 +3,7 @@ from client.Piece import Piece
 
 class Knight(Piece):
     def __init__(self):
-        pass
+        super().__init__(self, color, x, y)
 
-    def possible_moves(self):
+    def find_possible_moves(self):
         pass
