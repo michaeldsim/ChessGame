@@ -2,7 +2,8 @@ import abc
 
 
 class Piece(metaclass=abc.ABCMeta):
-    def __init__(self, piece_type,color, x, y):
+    def __init__(self, board, piece_type, color, x, y):
+        self.board = board
         self.piece_type = piece_type
         self.color = color
         self.x = x
@@ -27,7 +28,13 @@ class Piece(metaclass=abc.ABCMeta):
         else:
             return True
 
+    def __str__(self):
+        return self.piece_type
+
     @abc.abstractmethod
     def find_possible_moves(self):
         pass
 
+    @abc.abstractmethod
+    def can_eat(self):
+        pass

@@ -15,8 +15,11 @@ class Tile:
     def get_contains(self):
         return self.contains
 
+    def set_contains(self, contains):
+        self.contains = contains
+
     def get_color(self):
         return self.color
 
     def __str__(self):
-        return 'Tile Coords: ({},{}), Color: {}, Contains: {}'.format(self.x, self.y, self.color, self.contains)
+        return 'Tile Coords: ({},{}) Color: {} Contains: {}'.format(self.x, self.y, self.color, self.contains.__str__())
