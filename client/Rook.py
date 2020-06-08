@@ -1,5 +1,6 @@
 from client.Piece import Piece
 
+
 class Rook(Piece):
     def __init__(self, board, color, x, y):
         super.__init__(board, color, x, y)
