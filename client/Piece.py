@@ -1,18 +1,16 @@
 import abc
 
+# TODO: ALL PIECES/SUBCLASSES NEED TO BE FINISHED
+
 
 class Piece(metaclass=abc.ABCMeta):
     def __init__(self, board, piece_type, color, x, y):
-        if color == 'black' or 'white':
-            self.board = board
-            self.piece_type = piece_type
-            self.color = color
-            self.x = x
-            self.y = y
-            self.possible_moves = []
-        else:
-            print('incorrect parameter for piece initialization')
-            quit()
+        self.board = board
+        self.piece_type = piece_type
+        self.color = color
+        self.x = x
+        self.y = y
+        self.possible_moves = []
 
     def get_color(self):
         return self.color
@@ -51,7 +49,7 @@ class Piece(metaclass=abc.ABCMeta):
         if true: it is in range
         if false: it is not
         """
-        if x > 7 or x > 0 or y > 7 or y > 0:
+        if x > 7 or x < 0 or y > 7 or y < 0:
             print("Out of bounds error!\nCoordinates: ({},{})".format(self.x, self.y))
             return False
         else:
@@ -62,8 +60,4 @@ class Piece(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def find_possible_moves(self):
-        pass
-
-    @abc.abstractmethod
-    def can_eat(self):
         pass

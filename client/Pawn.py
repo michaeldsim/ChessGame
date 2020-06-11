@@ -1,16 +1,22 @@
-from client.Piece import *
+from client.Queen import *
+from client.Rook import *
+from client.Bishop import *
+from client.Knight import *
 
 
 class Pawn(Piece):
     def __init__(self, board, color, x, y):
         if color == 'black':
-            ptype = '♟'
+            p_type = '♟'
+            super().__init__(board, p_type, color, x, y)
+            self.first_move = True
+        elif color == 'white':
+            p_type = '♙'
+            super().__init__(board, p_type, color, x, y)
+            self.first_move = True
         else:
-            ptype = '♙'
-        super().__init__(board, ptype, color, x, y)
-        # first move has the option to move either one or two spaces
-        # this will keep track of that
-        self.first_move = True
+            print('incorrect parameter for color')
+            quit()
 
     def move(self, x, y):
         """
@@ -35,30 +41,6 @@ class Pawn(Piece):
             self.find_possible_moves()
         else:
             print('element not found, move not possible')
-
-    def can_eat(self):
-        if color == 'white':
-            eat_pattern = [[self.x - 1 , self.y + y] for y in range(-1, 2, 2)]
-            for i in eat_pattern:
-                piece = self.board.get_tile(i[0], i[1]).get_contains()
-                if piece is None:
-                    continue
-
-                if piece.get_color() == self.get_color():
-                    continue
-                else:
-                    self.possible_moves.append([i[0], i[1]])
-        else:
-            eat_pattern = [[self.x + 1, self.y + y] for y in range(-1, 2, 2)]
-            for i in eat_pattern:
-                piece = self.board.get_tile(i[0], i[1]).get_contains()
-                if piece is None:
-                    continue
-
-                if piece.get_color() == self.get_color():
-                    continue
-                else:
-                    self.possible_moves.append([i[0], i[1]])
 
     def promote(self, new_piece):
         """
@@ -85,17 +67,46 @@ class Pawn(Piece):
     def find_possible_moves(self):
         if self.color == 'white':
             if self.first_move:
-                self.possible_moves = [[self.x - x, self.y] for x in range(1,3)]
+                self.possible_moves = [[self.x - x, self.y] for x in range(1, 3)]
             else:
-                self.can_eat()
                 new_x = self.x - 1
                 if self.out_of_bounds_checking(new_x, self.y):
-                    self.possible_moves.append([new_x, self.y])
+                    pattern = [[new_x, self.y + y] for y in range(-1, 2)]
+                    for i in pattern:
+                        pos = self.y - i[1]
+                        if pos == -1 or pos == 1:
+                            piece = self.board.get_tile(i[0], i[1]).get_contains()
+                            if piece is None:
+                                continue
+
+                            if piece.get_color() == self.get_color():
+                                continue
+                            else:
+                                self.possible_moves.append([i[0], i[1]])
+                        else:
+                            piece = self.board.get_tile(i[0], i[1]).get_contains()
+                            if piece is None:
+                                self.possible_moves.append([i[0], i[1]])
         else:
             if self.first_move:
-                self.possible_moves = [[self.x + x, self.y] for x in range(1,3)]
+                self.possible_moves = [[self.x + x, self.y] for x in range(1, 3)]
             else:
                 new_x = self.x + 1
                 if self.out_of_bounds_checking(new_x, self.y):
-                    self.possible_moves.append([new_x, self.y])
+                    pattern = [[new_x, self.y + y] for y in range(-1, 2)]
+                    for i in pattern:
+                        pos = self.y - i[1]
+                        if pos == -1 or pos == 1:
+                            piece = self.board.get_tile(i[0], i[1]).get_contains()
+                            if piece is None:
+                                continue
+
+                            if piece.get_color() == self.get_color():
+                                continue
+                            else:
+                                self.possible_moves.append([i[0], i[1]])
+                        else:
+                            piece = self.board.get_tile(i[0], i[1]).get_contains()
+                            if piece is None:
+                                self.possible_moves.append([i[0], i[1]])
 

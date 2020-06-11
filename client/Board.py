@@ -1,5 +1,6 @@
 from client.Tile import Tile
 from client.Pawn import *
+import time
 
 
 class Board:
@@ -94,15 +95,17 @@ board = Board()
 # board.print_board()
 # board.print_board_matrix_color()
 pawn = Pawn(board, 'white', 6, 2)
-pawn2 = Pawn(board, 'black', 1, 1)
+pawn2 = Pawn(board, 'black', 3, 1)
+pawn3 = Pawn(board, 'black', 3, 3)
 board.get_tile(6, 2).set_contains(pawn)
-board.get_tile(1, 1).set_contains(pawn2)
+board.get_tile(3, 1).set_contains(pawn2)
+board.get_tile(3, 3).set_contains(pawn3)
 board.print_board_matrix()
 board.print_board_matrix_p2()
 print('------------Possible Moves---------------')
 pawn.find_possible_moves()
 print(pawn.possible_moves)
-pawn.move(2, 2)
+pawn.move(4, 2)
 board.print_board_matrix()
 board.print_board_matrix_p2()
 print('------------Possible Moves---------------')
