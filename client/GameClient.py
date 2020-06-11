@@ -24,6 +24,7 @@ class GameClient:
         while self.running:
             # This is the game loop
             # dt is how you can ensure everything moves at the same speed regardless of the computer
+            # you use this and multiply by speed to ensure same speed on any fps
             dt = clock.tick(self.FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
