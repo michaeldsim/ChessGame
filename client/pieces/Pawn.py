@@ -1,7 +1,7 @@
-from client.Queen import *
-from client.Rook import *
-from client.Bishop import *
-from client.Knight import *
+from client.pieces.Queen import *
+from client.pieces.Rook import *
+from client.pieces.Bishop import *
+from client.pieces.Knight import *
 
 
 class Pawn(Piece):
@@ -32,6 +32,13 @@ class Pawn(Piece):
             print('element found, move possible')
             if self.first_move:
                 self.first_move = False
+
+            piece = self.board.get_tile(x, y).get_contains()
+            if piece is None:
+                pass
+            else:
+                self.board.removed_pieces.append(piece)
+
             self.board.get_tile(x, y).set_contains(self)
             # remove instance from old tile
             self.board.get_tile(self.x, self.y).set_contains(None)
@@ -49,21 +56,27 @@ class Pawn(Piece):
 
         this function will replace the pawn from the current tile with a new object in the same position
         """
-        if new_piece == 'queen':
-            queen = Queen(self.board, self.color, self.x, self.y)
-            self.board.get_tile(self.x, self.y).set_contains(queen)
-        elif new_piece == 'rook':
-            rook = Rook(self.board, self.color, self.x, self.y)
-            self.board.get_tile(self.x, self.y).set_contains(rook)
-        elif new_piece == 'bishop':
-            bishop = Bishop(self.board, self.color, self.x, self.y)
-            self.board.get_tile(self.x, self.y).set_contains(bishop)
-        elif new_piece == 'knight':
-            knight = Knight(self.board, self.color, self.x, self.y)
-            self.board.get_tile(self.x, self.y).set_contains(knight)
+        if (self.color == 'white' and self.x == 0) or (self.color == 'black' and self.x == 7):
+            if new_piece == 'queen':
+                queen = Queen(self.board, self.color, self.x, self.y)
+                self.board.get_tile(self.x, self.y).set_contains(queen)
+            elif new_piece == 'rook':
+                rook = Rook(self.board, self.color, self.x, self.y)
+                self.board.get_tile(self.x, self.y).set_contains(rook)
+            elif new_piece == 'bishop':
+                bishop = Bishop(self.board, self.color, self.x, self.y)
+                self.board.get_tile(self.x, self.y).set_contains(bishop)
+            elif new_piece == 'knight':
+                knight = Knight(self.board, self.color, self.x, self.y)
+                self.board.get_tile(self.x, self.y).set_contains(knight)
+            else:
+                print('incorrect parameter for promotion: can only be queen, rook, bishop, knight')
         else:
-            print('incorrect parameter for promotion: can only be queen, rook, bishop, knight')
+            print('unable to promote because incorrect coordinates')
 
+    # update first move in case a piece is in location
+    # TODO: IMPLEMENT EN PASSANT
+    # if it moves 2 square it can be captured in the current and square it passed over for only one turn (x - 1)
     def find_possible_moves(self):
         if self.color == 'white':
             if self.first_move:

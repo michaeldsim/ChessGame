@@ -1,10 +1,15 @@
 from client.Tile import Tile
-from client.Pawn import *
-import time
+from client.pieces.Pawn import *
+from client.pieces.Queen import *
+from client.pieces.King import *
+from client.pieces.Bishop import *
+from client.pieces.Rook import *
+from client.pieces.Knight import *
 
 
 class Board:
     ROWS = COLUMNS = 8
+    removed_pieces = []
 
     # TODO: FIGURE OUT TO FIND REMOVED PIECES FROM TILES AND PUT IN A LIST ON THE BOARD
     def __init__(self):
@@ -13,7 +18,6 @@ class Board:
 
     def create_empty_board(self):
         count = 1
-        color = ''
         same = 'white'
         opposite = 'black'
         new_board = [[0 for x in range(self.ROWS)] for y in range(self.COLUMNS)]
@@ -94,20 +98,19 @@ class Board:
 board = Board()
 # board.print_board()
 # board.print_board_matrix_color()
-pawn = Pawn(board, 'white', 6, 2)
+pawn = Pawn(board, 'white', 5, 2)
 pawn2 = Pawn(board, 'black', 3, 1)
-pawn3 = Pawn(board, 'black', 3, 3)
-board.get_tile(6, 2).set_contains(pawn)
+pawn3 = Pawn(board, 'black', 2, 5)
+board.get_tile(5, 2).set_contains(pawn)
 board.get_tile(3, 1).set_contains(pawn2)
-board.get_tile(3, 3).set_contains(pawn3)
+board.get_tile(2, 5).set_contains(pawn3)
 board.print_board_matrix()
 board.print_board_matrix_p2()
 print('------------Possible Moves---------------')
-pawn.find_possible_moves()
-print(pawn.possible_moves)
-pawn.move(4, 2)
+king = King(board, 'white', 4, 3)
+board.get_tile(4, 3).set_contains(king)
+king.find_possible_moves()
+print(king.possible_moves)
+king.show_moves_on_board()
 board.print_board_matrix()
-board.print_board_matrix_p2()
-print('------------Possible Moves---------------')
-print(pawn.possible_moves)
 

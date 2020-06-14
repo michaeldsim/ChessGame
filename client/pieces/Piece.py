@@ -19,6 +19,12 @@ class Piece(metaclass=abc.ABCMeta):
         # move to new tile
         elem = [x, y]
         if elem in self.possible_moves:
+            piece = self.board.get_tile(x, y).get_contains()
+            if piece is None:
+                pass
+            else:
+                self.board.removed_pieces.append(piece)
+
             print('element found, move possible')
             self.board.get_tile(x, y).set_contains(self)
             # remove instance from old tile
@@ -26,12 +32,11 @@ class Piece(metaclass=abc.ABCMeta):
             self.x = x
             self.y = y
             self.find_possible_moves()
-
         else:
             print('element not found, move not possible')
 
     # always works even if not in possible_moves
-    def _debug_move(self, x, y):
+    def debug_move(self, x, y):
         # move to new tile
         if self.out_of_bounds_checking(x, y):
             self.board.get_tile(x, y).set_contains(self)
@@ -43,17 +48,52 @@ class Piece(metaclass=abc.ABCMeta):
         else:
             print('cannot move out of bounds issue')
 
-    def out_of_bounds_checking(self, x, y):
+    @staticmethod
+    def out_of_bounds_checking_one(n):
+        """
+        checks if the coordinate is out of bounds
+        if true: it is in range
+        if false: it is not
+        """
+        if n > 7 or n < 0:
+            print("Out of bounds error!\n({})".format(n))
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def out_of_bounds_checking(x, y):
         """
         checks if the coordinate is out of bounds
         if true: it is in range
         if false: it is not
         """
         if x > 7 or x < 0 or y > 7 or y < 0:
-            print("Out of bounds error!\nCoordinates: ({},{})".format(self.x, self.y))
+            print("Out of bounds error!\nCoordinates: ({},{})".format(x, y))
             return False
         else:
             return True
+
+    def show_moves_on_board(self):
+        print('    0   1   2   3   4   5   6   7')
+        for i in range(self.board.ROWS):
+            print('{} ['.format(i), end='')
+            for j in range(self.board.COLUMNS):
+                if j == 7:
+                    if [i, j] in self.possible_moves:
+                        print('███', end='')
+                    elif [i, j] == [self.x, self.y]:
+                        print(' O ', end='')
+                    else:
+                        print('   ', end='')
+                else:
+                    if [i, j] in self.possible_moves:
+                        print('███,', end='')
+                    elif [i, j] == [self.x, self.y]:
+                        print(' O ,', end='')
+                    else:
+                        print('   ,', end='')
+            print(']')
 
     def __str__(self):
         return self.piece_type
