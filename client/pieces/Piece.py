@@ -31,7 +31,18 @@ class Piece(metaclass=abc.ABCMeta):
             self.board.get_tile(self.x, self.y).set_contains(None)
             self.x = x
             self.y = y
+            self.possible_moves = []
             self.find_possible_moves()
+
+            if self.color == 'white':
+                king = self.board.get_black_king().get_coordinates()
+                if king in self.possible_moves:
+                    king.is_checked = True
+            else:
+                king = self.board.get_white_king().get_coordinates()
+                if king in self.possible_moves:
+                    king.is_checked = True
+
         else:
             print('element not found, move not possible')
 
@@ -44,32 +55,31 @@ class Piece(metaclass=abc.ABCMeta):
             self.board.get_tile(self.x, self.y).set_contains(None)
             self.x = x
             self.y = y
+            self.possible_moves = []
             self.find_possible_moves()
         else:
             print('cannot move out of bounds issue')
 
-    @staticmethod
-    def out_of_bounds_checking_one(n):
+    def out_of_bounds_checking_one(self, n):
         """
         checks if the coordinate is out of bounds
         if true: it is in range
         if false: it is not
         """
         if n > 7 or n < 0:
-            print("Out of bounds error!\n({})".format(n))
+            print("Out of bounds error!\n({}) from {}".format(n, self))
             return False
         else:
             return True
 
-    @staticmethod
-    def out_of_bounds_checking(x, y):
+    def out_of_bounds_checking(self, x, y):
         """
         checks if the coordinate is out of bounds
         if true: it is in range
         if false: it is not
         """
         if x > 7 or x < 0 or y > 7 or y < 0:
-            print("Out of bounds error!\nCoordinates: ({},{})".format(x, y))
+            print("Out of bounds error!\nCoordinates: ({},{}) from {}".format(x, y, self))
             return False
         else:
             return True

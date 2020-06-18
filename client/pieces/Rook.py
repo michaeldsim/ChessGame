@@ -6,9 +6,11 @@ class Rook(Piece):
         if color == 'black':
             p_type = '♜'
             super().__init__(board, p_type, color, x, y)
+            self.has_not_moved = True
         elif color == 'white':
             p_type = '♖'
             super().__init__(board, p_type, color, x, y)
+            self.has_not_moved = True
         else:
             print('incorrect parameter for color')
             quit()

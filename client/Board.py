@@ -10,11 +10,13 @@ from client.pieces.Knight import *
 class Board:
     ROWS = COLUMNS = 8
     removed_pieces = []
+    black_pieces = []
+    white_pieces = []
 
     # TODO: FIGURE OUT TO FIND REMOVED PIECES FROM TILES AND PUT IN A LIST ON THE BOARD
     def __init__(self):
         self.board = self.create_empty_board()
-        # self.populate_board()
+        self.populate_board()
 
     def create_empty_board(self):
         count = 1
@@ -44,11 +46,59 @@ class Board:
     def populate_board(self):
         # fill in pawns
         for i in range(self.ROWS):
+            if i == 2 or i == 3 or i == 4 or i == 5:
+                continue
             for j in range(self.COLUMNS):
-                if i == 1:
-                    self.get_tile(i, j).set_contains(Pawn(self.board,'white', i, j))
+                if i == 7:
+                    if j == 0 or j == 7:
+                        piece = Rook(self.board, 'white', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    elif j == 1 or j == 6:
+                        piece = Knight(self.board, 'white', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    elif j == 2 or j == 5:
+                        piece = Bishop(self.board, 'white', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    elif j == 3:
+                        piece = Queen(self.board, 'white', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    else:
+                        piece = King(self.board, 'white', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                elif i == 0:
+                    if j == 0 or j == 7:
+                        piece = Rook(self.board, 'black', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    elif j == 1 or j == 6:
+                        piece = Knight(self.board, 'black', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    elif j == 2 or j == 5:
+                        piece = Bishop(self.board, 'black', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    elif j == 3:
+                        piece = Queen(self.board, 'black', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
+                    else:
+                        piece = King(self.board, 'black', i, j)
+                        self.get_tile(i, j).set_contains(piece)
+                        self.white_pieces.append(piece)
                 elif i == 6:
-                    self.get_tile(i, j).set_contains(Pawn(self.board, 'black', i, j))
+                    piece = Pawn(self.board, 'white', i, j)
+                    self.get_tile(i, j).set_contains(piece)
+                    self.white_pieces.append(piece)
+                elif i == 1:
+                    piece = Pawn(self.board, 'black', i, j)
+                    self.get_tile(i, j).set_contains(piece)
+                    self.black_pieces.append(piece)
 
     def print_board(self):
         for i in range(len(self.board)):
@@ -94,23 +144,28 @@ class Board:
                     print('   ', end='')
             print(']')
 
+    @staticmethod
+    def all_possible_moves(pieces):
+        lst = []
+        for piece in pieces:
+            lst.extend(piece.possible_moves)
+        return lst
+
+    def get_white_king(self):
+        for piece in self.white_pieces:
+            if not isinstance(King):
+                continue
+            else:
+                return piece
+
+    def get_black_king(self):
+        for piece in self.black_pieces:
+            if not isinstance(King):
+                continue
+            else:
+                return piece
+
 
 board = Board()
-# board.print_board()
-# board.print_board_matrix_color()
-pawn = Pawn(board, 'white', 5, 2)
-pawn2 = Pawn(board, 'black', 3, 1)
-pawn3 = Pawn(board, 'black', 2, 5)
-board.get_tile(5, 2).set_contains(pawn)
-board.get_tile(3, 1).set_contains(pawn2)
-board.get_tile(2, 5).set_contains(pawn3)
 board.print_board_matrix()
-board.print_board_matrix_p2()
-print('------------Possible Moves---------------')
-king = King(board, 'white', 4, 3)
-board.get_tile(4, 3).set_contains(king)
-king.find_possible_moves()
-print(king.possible_moves)
-king.show_moves_on_board()
-board.print_board_matrix()
-
+board.print_board_matrix_color()

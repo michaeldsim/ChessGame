@@ -46,6 +46,14 @@ class Pawn(Piece):
             self.y = y
             self.possible_moves = []
             self.find_possible_moves()
+            if self.color == 'white':
+                king = self.board.get_black_king().get_coordinates()
+                if king in self.possible_moves:
+                    king.is_checked = True
+            else:
+                king = self.board.get_white_king().get_coordinates()
+                if king in self.possible_moves:
+                    king.is_checked = True
         else:
             print('element not found, move not possible')
 
@@ -60,21 +68,24 @@ class Pawn(Piece):
             if new_piece == 'queen':
                 queen = Queen(self.board, self.color, self.x, self.y)
                 self.board.get_tile(self.x, self.y).set_contains(queen)
+                queen.find_possible_moves()
             elif new_piece == 'rook':
                 rook = Rook(self.board, self.color, self.x, self.y)
                 self.board.get_tile(self.x, self.y).set_contains(rook)
+                rook.find_possible_moves()
             elif new_piece == 'bishop':
                 bishop = Bishop(self.board, self.color, self.x, self.y)
                 self.board.get_tile(self.x, self.y).set_contains(bishop)
+                bishop.find_possible_moves()
             elif new_piece == 'knight':
                 knight = Knight(self.board, self.color, self.x, self.y)
                 self.board.get_tile(self.x, self.y).set_contains(knight)
+                knight.find_possible_moves()
             else:
                 print('incorrect parameter for promotion: can only be queen, rook, bishop, knight')
         else:
             print('unable to promote because incorrect coordinates')
 
-    # update first move in case a piece is in location
     # TODO: IMPLEMENT EN PASSANT
     # if it moves 2 square it can be captured in the current and square it passed over for only one turn (x - 1)
     def find_possible_moves(self):
